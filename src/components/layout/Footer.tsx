@@ -1,5 +1,6 @@
 import { ChartNoAxesCombined, Cog, House } from 'lucide-react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 const footerOption = [
   {
@@ -20,17 +21,26 @@ const footerOption = [
 ];
 
 export default function Footer() {
+  const pathName = usePathname();
   return (
     <footer className=''>
       <ol className='fixed bottom-0 w-full border-t-[1px] border-slate-600 flex justify-evenly py-3 gap-3'>
-        {footerOption.map(({ name, href, icon }) => (
-          <Link key={href + name} href={href}>
-            <li className='grid gap-y-1 place-items-center'>
-              <span>{icon}</span>
-              <span className='text-xs'>{name}</span>
-            </li>
-          </Link>
-        ))}
+        {footerOption.map(({ name, href, icon }) => {
+          const isActive = pathName === href;
+          console.table({ pathName, name });
+          return (
+            <Link
+              key={href + name}
+              href={href}
+              className={`${isActive && 'text-primary'}`}
+            >
+              <li className='grid gap-y-1 place-items-center'>
+                <span>{icon}</span>
+                <span className='text-xs font-semibold'>{name}</span>
+              </li>
+            </Link>
+          );
+        })}
       </ol>
     </footer>
   );

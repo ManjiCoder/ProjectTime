@@ -19,10 +19,8 @@ export default function Home() {
     >
       <main className='flex flex-col gap-8 row-start-2 items-center sm:items-start'>
         <h1 className='scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl text-balance'>
-          <span className='text-yellow-400 dark:text-yellow-500 '>
-            {appInfo.title}
-          </span>{' '}
-          - Turn time into progress
+          <span className='text-primary'>{appInfo.title}</span> - Turn time into
+          progress
         </h1>
       </main>
     </div>
