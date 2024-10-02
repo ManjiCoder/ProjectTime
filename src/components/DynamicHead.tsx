@@ -1,10 +1,23 @@
-import { appName } from "@/types";
+import { appInfo } from "@/types";
 import Head from "next/head";
+import { ReactNode } from "react";
 
-export default function DynamicHead() {
+type DynamicHeadProps = {
+  title?: string;
+  desc?: string;
+  children?: ReactNode;
+};
+
+export default function DynamicHead({
+  title = appInfo.title,
+  desc = appInfo.desc,
+  children,
+}: DynamicHeadProps) {
   return (
     <Head>
-      <title>{appName}</title>
+      <title>{title}</title>
+      <meta name='description' content={desc} />
+      {children}
     </Head>
   );
 }
