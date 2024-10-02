@@ -27,7 +27,6 @@ export default function Footer() {
       <ol className='fixed bottom-0 w-full border-t-[1px] border-slate-600 flex justify-evenly py-3 gap-3'>
         {footerOption.map(({ name, href, icon }) => {
           const isActive = pathName === href;
-          console.table({ pathName, name });
           return (
             <Link
               key={href + name}
