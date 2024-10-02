@@ -6,9 +6,7 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <>
       <Component {...pageProps} />
-      <DynamicHead>
-        <title>Jai Shree Ram</title>
-      </DynamicHead>
+      <DynamicHead />
     </>
   );
 }
