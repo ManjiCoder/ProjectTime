@@ -2,9 +2,11 @@ import DynamicHead from '@/components/DynamicHead';
 import Footer from '@/components/layout/Footer';
 import { ThemeBtn } from '@/components/layout/ThemeBtn';
 import { ThemeProvider } from '@/components/ThemeProvider';
+import { store } from '@/redux/store';
 import '@/styles/globals.css';
 import type { AppProps } from 'next/app';
 import localFont from 'next/font/local';
+import { Provider } from 'react-redux';
 
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
@@ -25,14 +27,16 @@ export default function App({ Component, pageProps }: AppProps) {
       enableSystem
       disableTransitionOnChange
     >
-      <div
-        className={`${geistSans.variable} ${geistMono.variable} font-[family-name:var(--font-geist-sans)]`}
-      >
-        <ThemeBtn />
-        <Component {...pageProps} />
-        <DynamicHead />
-        <Footer />
-      </div>
+      <Provider store={store}>
+        <div
+          className={`${geistSans.variable} ${geistMono.variable} font-[family-name:var(--font-geist-sans)]`}
+        >
+          <ThemeBtn />
+          <Component {...pageProps} />
+          <DynamicHead />
+          <Footer />
+        </div>
+      </Provider>
     </ThemeProvider>
   );
 }

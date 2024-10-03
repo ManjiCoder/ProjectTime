@@ -17,20 +17,20 @@ import {
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { addProject } from '@/redux/features/projects/projectsSlice';
+import { useAppDispatch } from '@/redux/hooks/hooks';
 import { PlusIcon } from 'lucide-react';
 import { useState } from 'react';
 
 export default function AddProject() {
   const [isOpen, setIsOpen] = useState(false);
-  const [projects, setProjects] = useState<string[] | never>([]);
+  // const [projects, setProjects] = useState<string[] | never>([]);
   const [projectName, setProjectName] = useState('');
   const closeModal = () => setIsOpen(false);
-
+  const dispatch = useAppDispatch();
   const handleSubmit = () => {
-    // closeModal();
-    console.log(projectName);
-    projects.push(projectName);
-    setProjects(Array.from(new Set(projects)));
+    dispatch(addProject(projectName));
+    closeModal();
   };
   return (
     <>
