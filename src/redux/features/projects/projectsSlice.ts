@@ -1,14 +1,32 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { RootState } from '@/redux/store';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
+// Define the type for your state
+interface ProjectsState {
+  [key: string]: any;
+}
+
+const initialState: ProjectsState = {
+  ProjectTime: {
+    '03-10-2024': {
+      time: 60,
+    },
+  },
+  MasterTime: {},
+  CodingJournal: {},
+  MoneyMap: {},
+};
 const projectsSlice = createSlice({
   name: 'projects',
-  initialState: <string[] | never>[],
+  initialState,
   reducers: {
-    addProject: (state, action: PayloadAction<string>) => {
-      const projectName = action.payload;
-      if (!state.includes(projectName)) {
-        state.push(projectName);
+    addProject: (state, action: PayloadAction<[string, any]>) => {
+      try {
+        const [key, value] = action.payload;
+        state[key] = value;
+      } catch (error) {
+        console.log(error);
       }
     },
   },

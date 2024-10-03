@@ -29,7 +29,7 @@ export default function Footer() {
   const pathName = usePathname();
   return (
     <footer className=''>
-      <ol className='fixed bottom-0 w-full border-t-[1px] border-slate-600 flex justify-evenly py-3 gap-3'>
+      <ol className='fixed z-10 backdrop-blur-md bottom-0 w-full border-t-[1px] border-slate-600 flex justify-evenly py-3 gap-3'>
         {footerOption.map(({ name, href, icon }) => {
           const isActive = pathName === href;
           return (
