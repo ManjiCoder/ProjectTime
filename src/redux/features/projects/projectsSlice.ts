@@ -1,3 +1,4 @@
+import { RootState } from '@/redux/store';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 const projectsSlice = createSlice({
@@ -14,4 +15,6 @@ const projectsSlice = createSlice({
 });
 
 export const { addProject } = projectsSlice.actions;
+// Other code such as selectors can use the imported `RootState` type
+export const selectCount = (state: RootState) => state.projects;
 export default projectsSlice.reducer;
