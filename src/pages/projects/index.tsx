@@ -1,6 +1,5 @@
+import AddProject from '@/components/AddProject';
 import PageWrapper from '@/components/layout/PageWrapper';
-import { Button } from '@/components/ui/button';
-import { PlusIcon } from 'lucide-react';
 
 export default function Projects() {
   return (
@@ -11,12 +10,7 @@ export default function Projects() {
 
       <section>{/* All Projects will shown here */}</section>
 
-      <Button
-        variant={'outline'}
-        className='h-10 w-10 p-0 fixed bottom-24 right-5'
-      >
-        <PlusIcon />
-      </Button>
+      <AddProject />
     </PageWrapper>
   );
 }
