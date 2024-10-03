@@ -22,10 +22,15 @@ import { useState } from 'react';
 
 export default function AddProject() {
   const [isOpen, setIsOpen] = useState(false);
+  const [projects, setProjects] = useState<string[] | never>([]);
+  const [projectName, setProjectName] = useState('');
   const closeModal = () => setIsOpen(false);
 
   const handleSubmit = () => {
-    closeModal();
+    // closeModal();
+    console.log(projectName);
+    projects.push(projectName);
+    setProjects(Array.from(new Set(projects)));
   };
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -55,7 +60,12 @@ export default function AddProject() {
                       <Label htmlFor='name' className='max-sm:text-left'>
                         Project Name
                       </Label>
-                      <Input id='name' placeholder='Name of your project' />
+                      <Input
+                        id='name'
+                        placeholder='Name of your project'
+                        value={projectName}
+                        onChange={(e) => setProjectName(e.target.value)}
+                      />
                     </div>
                     {/* <div className='flex flex-col space-y-1.5'>
                       <Label htmlFor='framework'>Framework</Label>
