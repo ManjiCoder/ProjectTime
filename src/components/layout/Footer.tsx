@@ -1,4 +1,4 @@
-import { ChartNoAxesCombined, Cog, House } from 'lucide-react';
+import { ChartNoAxesCombined, Cog, Goal, House } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
@@ -7,6 +7,11 @@ const footerOption = [
     name: 'Home',
     icon: <House />,
     href: '/',
+  },
+  {
+    name: 'Projects',
+    icon: <Goal />,
+    href: '/projects',
   },
   {
     name: 'Analytics',
