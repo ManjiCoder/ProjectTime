@@ -1,5 +1,7 @@
+import { Button } from '@/components/ui/button';
 import { appInfo } from '@/types';
 import localFont from 'next/font/local';
+import Link from 'next/link';
 
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
@@ -18,10 +20,14 @@ export default function Home() {
       className={`${geistSans.variable} ${geistMono.variable} grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]`}
     >
       <main className='flex flex-col gap-8 row-start-2 items-center sm:items-start'>
-        <h1 className='scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl text-balance'>
+        <h1 className='scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl text-center md:text-balance '>
           <span className='text-primary'>{appInfo.title}</span> - Turn time into
           progress
         </h1>
+
+        <Link href='/projects' className='mx-auto mt-7'>
+          <Button variant='outline'>Go To Projects</Button>
+        </Link>
       </main>
     </div>
   );
