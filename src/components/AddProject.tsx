@@ -20,7 +20,7 @@ import { Label } from '@/components/ui/label';
 import { addProject } from '@/redux/features/projects/projectsSlice';
 import { useAppDispatch } from '@/redux/hooks/hooks';
 import { PlusIcon } from 'lucide-react';
-import { useState } from 'react';
+import { FormEvent, useState } from 'react';
 
 export default function AddProject() {
   const [isOpen, setIsOpen] = useState(false);
@@ -28,9 +28,15 @@ export default function AddProject() {
   const [projectName, setProjectName] = useState('');
   const closeModal = () => setIsOpen(false);
   const dispatch = useAppDispatch();
-  const handleSubmit = () => {
-    dispatch(addProject(projectName));
-    closeModal();
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    try {
+      dispatch(addProject(projectName));
+      setProjectName('');
+      closeModal();
+    } catch (error) {
+      console.log(error);
+    }
   };
   return (
     <>
@@ -54,8 +60,8 @@ export default function AddProject() {
                     Create your new project in one-click.
                   </CardDescription>
                 </CardHeader>
-                <CardContent>
-                  <form>
+                <form onSubmit={handleSubmit}>
+                  <CardContent>
                     <div className='grid w-full items-center gap-4'>
                       <div className='flex flex-col space-y-1.5'>
                         <Label htmlFor='name' className='max-sm:text-left'>
@@ -83,14 +89,14 @@ export default function AddProject() {
       </Select>
     </div> */}
                     </div>
-                  </form>
-                </CardContent>
-                <CardFooter className='flex justify-between'>
-                  <Button variant='outline' onClick={closeModal}>
-                    Cancel
-                  </Button>
-                  <Button onClick={handleSubmit}>Submit</Button>
-                </CardFooter>
+                  </CardContent>
+                  <CardFooter className='flex justify-between'>
+                    <Button variant='outline' onClick={closeModal}>
+                      Cancel
+                    </Button>
+                    <Button type='submit'>Submit</Button>
+                  </CardFooter>
+                </form>
               </Card>
             </DialogDescription>
           </DialogHeader>
