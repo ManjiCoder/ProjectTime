@@ -12,15 +12,23 @@ import {
   DialogContent,
   DialogDescription,
   DialogHeader,
+  DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { PlusIcon } from 'lucide-react';
+import { useState } from 'react';
 
 export default function AddProject() {
+  const [isOpen, setIsOpen] = useState(false);
+  const closeModal = () => setIsOpen(false);
+
+  const handleSubmit = () => {
+    closeModal();
+  };
   return (
-    <Dialog>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger>
         <Button
           variant={'outline'}
@@ -31,7 +39,7 @@ export default function AddProject() {
       </DialogTrigger>
       <DialogContent className='max-sm:w-11/12 max-sm:rounded-lg'>
         <DialogHeader>
-          {/* <DialogTitle>Are you absolutely sure?</DialogTitle> */}
+          <DialogTitle hidden>Create project</DialogTitle>
           <DialogDescription>
             <Card className='bg-transparent border-none'>
               <CardHeader>
@@ -67,8 +75,10 @@ export default function AddProject() {
                 </form>
               </CardContent>
               <CardFooter className='flex justify-between'>
-                <Button variant='outline'>Cancel</Button>
-                <Button>Submit</Button>
+                <Button variant='outline' onClick={closeModal}>
+                  Cancel
+                </Button>
+                <Button onClick={handleSubmit}>Submit</Button>
               </CardFooter>
             </Card>
           </DialogDescription>
