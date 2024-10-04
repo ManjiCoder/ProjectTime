@@ -13,7 +13,7 @@ export default function Projects() {
         Projects
       </h2>
 
-      <section className='grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 place-items-center'>
+      <section className='grid min-[400px]:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 place-items-center'>
         {/* All Projects will shown here */}
 
         {Object.keys(projects).length !== 0 &&
@@ -30,7 +30,7 @@ export default function Projects() {
                     {key.charAt(0)}
                   </AvatarFallback>
                 </Avatar>
-                <h4 className='scroll-m-20 text-xl font-semibold tracking-tight'>
+                <h4 className='scroll-m-20 text-xl font-semibold tracking-tight line-clamp-1'>
                   {key}
                 </h4>
               </Link>
