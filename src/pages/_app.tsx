@@ -1,12 +1,11 @@
 import DynamicHead from '@/components/DynamicHead';
 import Footer from '@/components/layout/Footer';
 import { ThemeBtn } from '@/components/layout/ThemeBtn';
-import { ThemeProvider } from '@/components/ThemeProvider';
-import { store } from '@/redux/store';
+import { ThemeProvider } from '@/components/theme/ThemeProvider';
+import ReduxPersist from '@/redux/ReduxPersist';
 import '@/styles/globals.css';
 import type { AppProps } from 'next/app';
 import localFont from 'next/font/local';
-import { Provider } from 'react-redux';
 
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
@@ -27,7 +26,7 @@ export default function App({ Component, pageProps }: AppProps) {
       enableSystem
       disableTransitionOnChange
     >
-      <Provider store={store}>
+      <ReduxPersist>
         <div
           className={`${geistSans.variable} ${geistMono.variable} font-[family-name:var(--font-geist-sans)]`}
         >
@@ -36,7 +35,7 @@ export default function App({ Component, pageProps }: AppProps) {
           <DynamicHead />
           <Footer />
         </div>
-      </Provider>
+      </ReduxPersist>
     </ThemeProvider>
   );
 }
