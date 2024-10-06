@@ -14,8 +14,6 @@ const initialState: ProjectsState = {
       cycles: {
         standard: {
           work: { duration: 25, count: 4 },
-          shortBreak: { duration: 5, count: 3 },
-          longBreak: { duration: 15, count: 1 },
         },
         focusCycles: {
           predefined: {
