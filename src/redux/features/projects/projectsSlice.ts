@@ -8,14 +8,14 @@ interface ProjectsState {
 }
 
 const initialState: ProjectsState = {
-  // ProjectTime: {
-  //   '03-10-2024': {
-  //     time: 60,
-  //   },
-  // },
-  // MasterTime: {},
-  // CodingJournal: {},
-  // MoneyMap: {},
+  ProjectTime: {
+    '03-10-2024': {
+      todayTime: 0,
+    },
+  },
+  MasterTime: {},
+  CodingJournal: {},
+  MoneyMap: {},
 };
 const projectsSlice = createSlice({
   name: 'projects',
