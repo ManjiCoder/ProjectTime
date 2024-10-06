@@ -9,8 +9,25 @@ interface ProjectsState {
 
 const initialState: ProjectsState = {
   ProjectTime: {
-    '03-10-2024': {
-      todayTime: 0,
+    '2024-10-03': {
+      totalTime: 315, // Total time in minutes
+      cycles: {
+        standard: {
+          work: { duration: 25, count: 4 },
+          shortBreak: { duration: 5, count: 3 },
+          longBreak: { duration: 15, count: 1 },
+        },
+        focusCycles: {
+          predefined: {
+            intensiveFocus: { duration: 45, count: 1 },
+            deepWork: { duration: 60, count: 2 },
+          },
+          userDefined: {
+            CreativeSession: { duration: 50, count: 1 },
+            ResearchTime: { duration: 90, count: 1 },
+          },
+        },
+      },
     },
   },
   MasterTime: {},
