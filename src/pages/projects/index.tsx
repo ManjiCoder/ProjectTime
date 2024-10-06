@@ -2,17 +2,7 @@ import AddProject from '@/components/AddProject';
 import PageWrapper from '@/components/layout/PageWrapper';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { useAppSelector } from '@/redux/hooks/hooks';
-import { Edit, EllipsisVertical, Trash } from 'lucide-react';
 
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
 import Link from 'next/link';
 
 export default function Projects() {
@@ -46,27 +36,6 @@ export default function Projects() {
                 </h4>
 
                 {/* Action Btn */}
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <EllipsisVertical className='absolute right-0 top-2' />
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent className='w-40'>
-                    <DropdownMenuLabel className='line-clamp-1'>
-                      {key}
-                    </DropdownMenuLabel>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuGroup>
-                      <DropdownMenuItem>
-                        <Edit className='mr-2 h-4 w-4' />
-                        <span>Edit</span>
-                      </DropdownMenuItem>
-                      <DropdownMenuItem>
-                        <Trash className='mr-2 h-4 w-4' />
-                        <span>Delete</span>
-                      </DropdownMenuItem>
-                    </DropdownMenuGroup>
-                  </DropdownMenuContent>
-                </DropdownMenu>
               </Link>
             );
           })}
