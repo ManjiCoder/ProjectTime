@@ -14,10 +14,10 @@ export default function Timer({ projectName, name, duration }: TimerProps) {
   const minRef = useRef<HTMLSpanElement>(null);
   const secRef = useRef<HTMLSpanElement>(null);
   const [isActive, setIsActive] = useState(false);
+  const [timerId, setTimerId] = useState<NodeJS.Timeout | null>(null);
 
   const dispatch = useAppDispatch();
 
-  const handleStop = () => {};
   const handlerTimer = () => {
     setIsActive(true);
     const minsElemt = minRef.current;
@@ -25,8 +25,8 @@ export default function Timer({ projectName, name, duration }: TimerProps) {
     const isMin = minsElemt && minsElemt.innerText;
     const isSec = secsElemt && secsElemt.innerText;
     if (isMin && isSec) {
-      let sec = 0;
-      let min = 0;
+      let sec = parseInt(secsElemt.innerText);
+      let min = parseInt(minsElemt.innerText);
       const timerId = setInterval(() => {
         sec += 1;
         if (sec === 60) {
@@ -53,6 +53,7 @@ export default function Timer({ projectName, name, duration }: TimerProps) {
           setIsActive(false);
         }
       }, 1000);
+      setTimerId(timerId);
     }
   };
 
@@ -69,15 +70,21 @@ export default function Timer({ projectName, name, duration }: TimerProps) {
         <span ref={secRef}>{(0o0).toString().padStart(2, '0')}</span>
       </h2>
 
-      {!isActive ? (
-        <Button onClick={handlerTimer}>Start</Button>
-      ) : (
-        <Button variant={'secondary'} onClick={handleStop}>
-          Stop
+      {isActive ? (
+        <Button
+          variant={'secondary'}
+          onClick={() => {
+            if (timerId) {
+              clearInterval(timerId);
+              setIsActive(false);
+            }
+          }}
+        >
+          Pause
         </Button>
+      ) : (
+        <Button onClick={handlerTimer}>Start</Button>
       )}
-      {/* <Button variant={'outline'}>Pause</Button> */}
-      {/* Action Btn */}
     </div>
   );
 }
