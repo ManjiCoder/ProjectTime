@@ -1,4 +1,4 @@
-import { startTimer } from '@/redux/features/projects/projectsSlice';
+import { updateProjectTime } from '@/redux/features/projects/projectsSlice';
 import { useAppDispatch } from '@/redux/hooks/hooks';
 import { format } from 'date-fns';
 import { useRef, useState } from 'react';
@@ -46,10 +46,21 @@ export default function Timer({ projectName, name, duration }: TimerProps) {
             duration,
           },
         };
-        dispatch(startTimer(payload));
+        dispatch(updateProjectTime(payload));
         if (min >= duration) {
           clearInterval(timerId);
           setIsActive(false);
+          const payload = {
+            key: projectName,
+            value: {
+              totalTime: min * 60 + sec,
+              date: format(new Date(), 'dd-MM-yyyy'),
+              cycleType: `${duration}min`,
+              duration,
+              count: 1,
+            },
+          };
+          dispatch(updateProjectTime(payload));
         }
       }, 1000);
       setTimerId(timerId);

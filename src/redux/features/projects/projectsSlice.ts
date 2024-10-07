@@ -34,10 +34,10 @@ const projectsSlice = createSlice({
         console.log(error);
       }
     },
-    startTimer: (state, action) => {
+    updateProjectTime: (state, action) => {
       const { key, value } = action.payload;
       try {
-        const { totalTime, date, cycleType, duration } = value;
+        const { totalTime, date, cycleType, duration, count } = value;
 
         const payload = {
           [date]: {
@@ -45,6 +45,11 @@ const projectsSlice = createSlice({
             totalTime,
           },
         };
+        if (count) {
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          payload[date].cycles[cycleType].count = count;
+        }
         state[key] = payload;
         console.log(payload);
       } catch (error) {
@@ -54,7 +59,7 @@ const projectsSlice = createSlice({
   },
 });
 
-export const { addProject, startTimer } = projectsSlice.actions;
+export const { addProject, updateProjectTime } = projectsSlice.actions;
 // Other code such as selectors can use the imported `RootState` type
 export const selectCount = (state: RootState) => state.projects;
 export default projectsSlice.reducer;
