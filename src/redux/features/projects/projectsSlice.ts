@@ -9,23 +9,13 @@ interface ProjectsState {
 
 const initialState: ProjectsState = {
   ProjectTime: {
-    '2024-10-03': {
-      totalTime: 315, // Total time in minutes
+    '07-10-2024': {
       cycles: {
-        standard: {
-          work: { duration: 25, count: 4 },
-        },
-        focusCycles: {
-          predefined: {
-            intensiveFocus: { duration: 45, count: 1 },
-            deepWork: { duration: 60, count: 2 },
-          },
-          userDefined: {
-            CreativeSession: { duration: 50, count: 1 },
-            ResearchTime: { duration: 90, count: 1 },
-          },
-        },
+        '25min': { name: 'work', duration: 25, count: 0 },
+        '45min': { name: 'intensive Focus ', duration: 45, count: 0 },
+        '60min': { name: 'deep Work', duration: 60, count: 0 },
       },
+      totalTime: 0, // Total time in minutes
     },
   },
   MasterTime: {},
@@ -44,10 +34,14 @@ const projectsSlice = createSlice({
         console.log(error);
       }
     },
+    startTimer: (state, action) => {
+      const { key, value } = action.payload;
+      console.log(key, value);
+    },
   },
 });
 
-export const { addProject } = projectsSlice.actions;
+export const { addProject, startTimer } = projectsSlice.actions;
 // Other code such as selectors can use the imported `RootState` type
 export const selectCount = (state: RootState) => state.projects;
 export default projectsSlice.reducer;

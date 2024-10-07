@@ -11,7 +11,7 @@ const cycles = [
 
 export default function Project() {
   const router = useRouter();
-  const { slug } = router.query || {};
+  const slug = router.query.slug || '';
   const projects = useAppSelector((state) => state.projects);
   console.log(projects);
 
@@ -28,7 +28,14 @@ export default function Project() {
 
         {cycles.length !== 0 &&
           cycles.map(({ name, duration }) => {
-            return <Timer key={name} name={name} duration={duration} />;
+            return (
+              <Timer
+                projectName={slug}
+                key={name}
+                name={name}
+                duration={duration}
+              />
+            );
           })}
       </section>
     </PageWrapper>

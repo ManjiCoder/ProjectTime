@@ -1,19 +1,25 @@
-import { useRef } from 'react';
-import { clearInterval } from 'timers';
+import { startTimer } from '@/redux/features/projects/projectsSlice';
+import { useAppDispatch } from '@/redux/hooks/hooks';
+import { format } from 'date-fns';
+import { useRef, useState } from 'react';
 import { Button } from './ui/button';
 
 type TimerProps = {
+  projectName: string | string[];
   name: string;
   duration: number;
 };
 
-export default function Timer({ name, duration }: TimerProps) {
+export default function Timer({ projectName, name, duration }: TimerProps) {
   const minRef = useRef<HTMLSpanElement>(null);
   const secRef = useRef<HTMLSpanElement>(null);
-  const timer = useRef(false);
+  const [isActive, setIsActive] = useState(false);
 
+  const dispatch = useAppDispatch();
+
+  const handleStop = () => {};
   const handlerTimer = () => {
-    timer.current = true;
+    setIsActive(true);
     const minsElemt = minRef.current;
     const secsElemt = secRef.current;
     const isMin = minsElemt && minsElemt.innerText;
@@ -29,11 +35,24 @@ export default function Timer({ name, duration }: TimerProps) {
           sec = 0;
         }
         secsElemt.innerText = sec.toString().padStart(2, '0');
+
+        // For redux
+        const payload = {
+          key: projectName,
+          value: {
+            sec,
+            totalTime: min,
+            date: format(new Date(), 'dd-MM-yyyy'),
+            cycleType: `${duration}min`,
+          },
+        };
+        dispatch(startTimer(payload));
+        if (min >= duration) {
+          console.table({ timerId, sec });
+          clearInterval(timerId);
+          setIsActive(false);
+        }
       }, 1000);
-      if (min >= duration) {
-        clearInterval(timerId);
-        timer.current = false;
-      }
     }
   };
 
@@ -50,7 +69,13 @@ export default function Timer({ name, duration }: TimerProps) {
         <span ref={secRef}>{(0o0).toString().padStart(2, '0')}</span>
       </h2>
 
-      <Button onClick={handlerTimer}>Start</Button>
+      {!isActive ? (
+        <Button onClick={handlerTimer}>Start</Button>
+      ) : (
+        <Button variant={'secondary'} onClick={handleStop}>
+          Stop
+        </Button>
+      )}
       {/* <Button variant={'outline'}>Pause</Button> */}
       {/* Action Btn */}
     </div>
