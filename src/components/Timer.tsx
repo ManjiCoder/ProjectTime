@@ -15,7 +15,7 @@ export default function Timer({ name, duration }: TimerProps) {
   const handlerTimer = () => {
     timer.current = true;
     const minsElemt = minRef.current;
-    const secsElemt = minRef.current;
+    const secsElemt = secRef.current;
     const isMin = minsElemt && minsElemt.innerText;
     const isSec = secsElemt && secsElemt.innerText;
     if (isMin && isSec) {
