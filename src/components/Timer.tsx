@@ -47,7 +47,8 @@ export default function Timer({ projectName, name, duration }: TimerProps) {
           },
         };
         dispatch(updateProjectTime(payload));
-        if (min >= duration) {
+        // if (min >= duration) {
+        if (sec >= 3) {
           clearInterval(timerId);
           setIsActive(false);
           const payload = {

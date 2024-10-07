@@ -2,9 +2,19 @@
 import { RootState } from '@/redux/store';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-// Define the type for your state
 interface ProjectsState {
   [key: string]: any;
+}
+interface Payload {
+  [x: number]: {
+    cycles: {
+      [x: number]: {
+        duration: number;
+        count?: number;
+      };
+    };
+    totalTime: number;
+  };
 }
 
 const initialState: ProjectsState = {
@@ -39,19 +49,28 @@ const projectsSlice = createSlice({
       try {
         const { totalTime, date, cycleType, duration, count } = value;
 
-        const payload = {
+        const payload: Payload = {
           [date]: {
-            cycles: { [cycleType]: { duration } },
-            totalTime,
+            cycles: {
+              [cycleType]: { duration },
+            },
+            totalTime: totalTime,
           },
         };
+        if (state[key][date].cycles) {
+          payload[date].cycles = {
+            ...state[key][date].cycles,
+            ...payload[date].cycles,
+          };
+        }
+        // if (state[key][date].totalTime) {
+        //   payload[date].totalTime =
+        //     state[key][date].totalTime + payload[date].totalTime;
+        // }
         if (count) {
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
           payload[date].cycles[cycleType].count = count;
         }
         state[key] = payload;
-        console.log(payload);
       } catch (error) {
         console.log(error);
       }
