@@ -40,15 +40,14 @@ export default function Timer({ projectName, name, duration }: TimerProps) {
         const payload = {
           key: projectName,
           value: {
-            sec,
-            totalTime: min,
+            totalTime: min * 60 + sec,
             date: format(new Date(), 'dd-MM-yyyy'),
             cycleType: `${duration}min`,
+            duration,
           },
         };
         dispatch(startTimer(payload));
         if (min >= duration) {
-          console.table({ timerId, sec });
           clearInterval(timerId);
           setIsActive(false);
         }

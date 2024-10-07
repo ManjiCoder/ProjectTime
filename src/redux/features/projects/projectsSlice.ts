@@ -9,14 +9,14 @@ interface ProjectsState {
 
 const initialState: ProjectsState = {
   ProjectTime: {
-    '07-10-2024': {
-      cycles: {
-        '25min': { name: 'work', duration: 25, count: 0 },
-        '45min': { name: 'intensive Focus ', duration: 45, count: 0 },
-        '60min': { name: 'deep Work', duration: 60, count: 0 },
-      },
-      totalTime: 0, // Total time in minutes
-    },
+    // '07-10-2024': {
+    //   cycles: {
+    //     '25min': { name: 'work', duration: 25, count: 0 },
+    //     '45min': { name: 'intensive Focus ', duration: 45, count: 0 },
+    //     '60min': { name: 'deep Work', duration: 60, count: 0 },
+    //   },
+    //   totalTime: 0, // Total time in minutes
+    // },
   },
   MasterTime: {},
   CodingJournal: {},
@@ -36,7 +36,20 @@ const projectsSlice = createSlice({
     },
     startTimer: (state, action) => {
       const { key, value } = action.payload;
-      console.log(key, value);
+      try {
+        const { totalTime, date, cycleType, duration } = value;
+
+        const payload = {
+          [date]: {
+            cycles: { [cycleType]: { duration } },
+            totalTime,
+          },
+        };
+        state[key] = payload;
+        console.log(payload);
+      } catch (error) {
+        console.log(error);
+      }
     },
   },
 });
