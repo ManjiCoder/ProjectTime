@@ -57,16 +57,17 @@ const projectsSlice = createSlice({
             totalTime: totalTime,
           },
         };
-        if (state[key][date].cycles) {
-          payload[date].cycles = {
-            ...state[key][date].cycles,
-            ...payload[date].cycles,
-          };
+        if (state[key][date]) {
+          if (state[key][date].cycles) {
+            payload[date].cycles = {
+              ...state[key][date].cycles,
+              ...payload[date].cycles,
+            };
+          }
+          // if (state[key][date].totalTime) {
+          //   payload[date].totalTime = state[key][date].totalTime + totalTime;
+          // }
         }
-        // if (state[key][date].totalTime) {
-        //   payload[date].totalTime =
-        //     state[key][date].totalTime + payload[date].totalTime;
-        // }
         if (count) {
           payload[date].cycles[cycleType].count = count;
         }
