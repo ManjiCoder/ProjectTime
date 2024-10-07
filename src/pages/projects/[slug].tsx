@@ -1,5 +1,5 @@
 import PageWrapper from '@/components/layout/PageWrapper';
-import { Button } from '@/components/ui/button';
+import Timer from '@/components/Timer';
 import { useAppSelector } from '@/redux/hooks/hooks';
 import { useRouter } from 'next/router';
 
@@ -23,25 +23,12 @@ export default function Project() {
       {/* {JSON.stringify(projects)} */}
       {/* All Timers */}
 
-      <section className='flex justify-center items-center flex-wrap gap-5 pb-16'>
+      <section className='grid items-center justify-evenly sm:grid-cols-2 md:grid-cols-3 gap-5 pb-16'>
         {/* All Projects will shown here */}
 
         {cycles.length !== 0 &&
           cycles.map(({ name, duration }) => {
-            return (
-              <div
-                key={name}
-                className='relative grid w-full max-w-60 md:min-w-36 p-5 gap-5 place-items-center border border-primary/50 shadow shadow-primary/60 rounded-xl'
-              >
-                <h2 className='scroll-m-20 capitalize text-xl font-semibold tracking-tight line-clamp-1'>
-                  {name} - {duration}
-                </h2>
-
-                <Button>Start</Button>
-                {/* <Button variant={'outline'}>Pause</Button> */}
-                {/* Action Btn */}
-              </div>
-            );
+            return <Timer key={name} name={name} duration={duration} />;
           })}
       </section>
     </PageWrapper>
