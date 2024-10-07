@@ -7,7 +7,7 @@ import timerSlice from './features/Timer/timerSlice';
 const persistConfig = {
   key: 'root',
   storage,
-  whitelist: ['projects', 'timer'],
+  whitelist: ['projects'],
 };
 
 const rootReducer = combineReducers({

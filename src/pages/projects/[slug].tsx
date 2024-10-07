@@ -31,7 +31,7 @@ export default function Project() {
             return (
               <Timer
                 projectName={slug}
-                key={name}
+                key={duration}
                 name={name}
                 duration={duration}
               />
