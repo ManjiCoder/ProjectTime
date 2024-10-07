@@ -1,7 +1,8 @@
 import { updateProjectTime } from '@/redux/features/projects/projectsSlice';
-import { useAppDispatch } from '@/redux/hooks/hooks';
+import { setIsActive, updateTimer } from '@/redux/features/Timer/timerSlice';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks/hooks';
 import { format } from 'date-fns';
-import { useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button } from './ui/button';
 
 type TimerProps = {
@@ -11,62 +12,58 @@ type TimerProps = {
 };
 
 export default function Timer({ projectName, name, duration }: TimerProps) {
-  const minRef = useRef<HTMLSpanElement>(null);
-  const secRef = useRef<HTMLSpanElement>(null);
-  const [isActive, setIsActive] = useState(false);
   const [timerId, setTimerId] = useState<NodeJS.Timeout | null>(null);
-
+  const { min, sec, isActive } = useAppSelector((state) => state.timer);
   const dispatch = useAppDispatch();
 
-  const handlerTimer = () => {
-    setIsActive(true);
-    const minsElemt = minRef.current;
-    const secsElemt = secRef.current;
-    const isMin = minsElemt && minsElemt.innerText;
-    const isSec = secsElemt && secsElemt.innerText;
-    if (isMin && isSec) {
-      let sec = parseInt(secsElemt.innerText);
-      let min = parseInt(minsElemt.innerText);
-      const timerId = setInterval(() => {
-        sec += 1;
-        if (sec === 60) {
-          min += 1;
-          minsElemt.innerText = min.toString().padStart(2, '0');
-          sec = 0;
-        }
-        secsElemt.innerText = sec.toString().padStart(2, '0');
+  const startTimer = () => {
+    dispatch(updateTimer());
 
-        // For redux
-        const payload = {
-          key: projectName,
-          value: {
-            totalTime: min * 60 + sec,
-            date: format(new Date(), 'dd-MM-yyyy'),
-            cycleType: `${duration}min`,
-            duration,
-          },
-        };
-        dispatch(updateProjectTime(payload));
-        if (min >= duration) {
-          // if (sec >= 3) {
-          clearInterval(timerId);
-          setIsActive(false);
-          const payload = {
-            key: projectName,
-            value: {
-              totalTime: min * 60 + sec,
-              date: format(new Date(), 'dd-MM-yyyy'),
-              cycleType: `${duration}min`,
-              duration,
-              count: 1,
-            },
-          };
-          dispatch(updateProjectTime(payload));
-        }
-      }, 1000);
-      setTimerId(timerId);
+    // For redux
+    const payload = {
+      key: projectName,
+      value: {
+        totalTime: min * 60 + sec,
+        date: format(new Date(), 'dd-MM-yyyy'),
+        cycleType: `${duration}min`,
+        duration,
+      },
+    };
+
+    dispatch(updateProjectTime(payload));
+    if (min >= duration && timerId) {
+      // if (sec >= 3) {
+      clearInterval(timerId);
+      dispatch(setIsActive(false));
+      const payload = {
+        key: projectName,
+        value: {
+          totalTime: min * 60 + sec,
+          date: format(new Date(), 'dd-MM-yyyy'),
+          cycleType: `${duration}min`,
+          duration,
+          count: 1,
+        },
+      };
+      dispatch(updateProjectTime(payload));
     }
   };
+  const handlerTimer = () => {
+    dispatch(setIsActive(true));
+    const timerId = setInterval(startTimer, 1000);
+    setTimerId(timerId);
+  };
+
+  useEffect(() => {
+    if (isActive) {
+      const timerId = setInterval(startTimer, 1000);
+      setTimerId(timerId);
+      return () => {
+        clearInterval(timerId);
+      };
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div
@@ -77,8 +74,8 @@ export default function Timer({ projectName, name, duration }: TimerProps) {
         {name} - {duration} min
       </h2>
       <h2 className='scroll-m-20 capitalize text-3xl font-semibold tracking-tight line-clamp-1'>
-        <span ref={minRef}>{(0o0).toString().padStart(2, '0')}</span> :{' '}
-        <span ref={secRef}>{(0o0).toString().padStart(2, '0')}</span>
+        <span>{min.toString().padStart(2, '0')}</span> :{' '}
+        <span>{sec.toString().padStart(2, '0')}</span>
       </h2>
 
       {isActive ? (
@@ -87,7 +84,7 @@ export default function Timer({ projectName, name, duration }: TimerProps) {
           onClick={() => {
             if (timerId) {
               clearInterval(timerId);
-              setIsActive(false);
+              dispatch(setIsActive(false));
             }
           }}
         >

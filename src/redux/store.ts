@@ -2,15 +2,17 @@ import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { persistReducer, persistStore } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import projectsSlice from './features/projects/projectsSlice';
+import timerSlice from './features/Timer/timerSlice';
 
 const persistConfig = {
   key: 'root',
   storage,
-  whitelist: ['projects'],
+  whitelist: ['projects', 'timer'],
 };
 
 const rootReducer = combineReducers({
   projects: projectsSlice,
+  timer: timerSlice,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
