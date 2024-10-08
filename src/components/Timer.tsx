@@ -24,6 +24,9 @@ export default function Timer({ projectName, name, duration }: TimerProps) {
   const dispatch = useAppDispatch();
 
   const startTimer = () => {
+    if (timerId) {
+      clearInterval(timerId);
+    }
     dispatch(updateTimer());
 
     // For redux
@@ -40,7 +43,6 @@ export default function Timer({ projectName, name, duration }: TimerProps) {
     dispatch(updateProjectTime(payload));
     if (min >= duration) {
       // if (sec >= 3) {
-      clearInterval(timerId);
       dispatch(setIsActive(false));
       const payload = {
         key: projectName,
@@ -57,19 +59,22 @@ export default function Timer({ projectName, name, duration }: TimerProps) {
   };
 
   const handlerTimer = () => {
+    if (timerId) {
+      clearInterval(timerId);
+    }
     dispatch(setIsActive(true));
     dispatch(setActiveName(duration));
-    const timerId = setInterval(startTimer, 1000);
-    dispatch(setTimerId(timerId));
+    const newTimerId = setInterval(startTimer, 1000);
+    dispatch(setTimerId(newTimerId));
   };
 
   useEffect(() => {
     if (isActive) {
-      const timerId = setInterval(startTimer, 1000);
-      dispatch(setTimerId(timerId));
+      const newTimerId = setInterval(startTimer, 1000);
+      dispatch(setTimerId(newTimerId));
       dispatch(setActiveName(duration));
       return () => {
-        clearInterval(timerId);
+        clearInterval(newTimerId);
       };
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

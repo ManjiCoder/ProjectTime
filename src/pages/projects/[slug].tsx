@@ -26,17 +26,16 @@ export default function Project() {
       <section className='grid items-center justify-evenly sm:grid-cols-2 md:grid-cols-3 gap-5 pb-16'>
         {/* All Projects will shown here */}
 
-        {cycles.length !== 0 &&
-          cycles.map(({ name, duration }) => {
-            return (
-              <Timer
-                projectName={slug}
-                key={duration}
-                name={name}
-                duration={duration}
-              />
-            );
-          })}
+        {cycles.map(({ name, duration }) => {
+          return (
+            <Timer
+              projectName={slug}
+              key={duration}
+              name={name}
+              duration={duration}
+            />
+          );
+        })}
       </section>
     </PageWrapper>
   );
