@@ -78,6 +78,14 @@ const projectsSlice = createSlice({
         console.log(error);
       }
     },
+    setProjectState: (state, action) => {
+      try {
+        const { name, date } = action.payload;
+        state[name][date] = defaultTimeData;
+      } catch (error) {
+        console.log(error);
+      }
+    },
     updateProjectTime: (state, action) => {
       const { projectName, currentDate, cycleType } = action.payload;
 
@@ -100,8 +108,12 @@ const projectsSlice = createSlice({
   },
 });
 
-export const { addProject, updateProjectTime, stopProjectTimer } =
-  projectsSlice.actions;
+export const {
+  addProject,
+  setProjectState,
+  updateProjectTime,
+  stopProjectTimer,
+} = projectsSlice.actions;
 // Other code such as selectors can use the imported `RootState` type
 export const selectCount = (state: RootState) => state.projects;
 export default projectsSlice.reducer;
