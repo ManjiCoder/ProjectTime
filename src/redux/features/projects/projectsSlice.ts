@@ -2,31 +2,66 @@
 import { RootState } from '@/redux/store';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-interface ProjectsState {
-  [key: string]: any;
+interface TimeSpent {
+  currentTime: number;
+  total: number;
 }
-interface Payload {
-  [x: number]: {
+interface Cycle {
+  name: string;
+  duration: number;
+  count: number;
+  isRunning: boolean;
+  timeSpent: TimeSpent;
+}
+interface ProjectData {
+  [key: string]: {
     cycles: {
-      [x: number]: {
-        duration: number;
-        count?: number;
-      };
+      [key: string]: Cycle;
     };
     totalTime: number;
   };
 }
+interface SliceState {
+  [projectName: string]: ProjectData;
+}
 
-const initialState: ProjectsState = {
+const initialState: SliceState = {
   ProjectTime: {
-    // '07-10-2024': {
-    //   cycles: {
-    //     '25min': { name: 'work', duration: 25, count: 0 },
-    //     '45min': { name: 'intensive Focus ', duration: 45, count: 0 },
-    //     '60min': { name: 'deep Work', duration: 60, count: 0 },
-    //   },
-    //   totalTime: 0, // Total time in minutes
-    // },
+    '07-10-2024': {
+      cycles: {
+        '25min': {
+          name: 'work',
+          duration: 1500,
+          count: 0,
+          isRunning: false,
+          timeSpent: {
+            currentTime: 0,
+            total: 0,
+          },
+        },
+        '45min': {
+          name: 'Intensive Focus',
+          duration: 2700,
+          count: 0,
+          isRunning: false,
+          timeSpent: {
+            currentTime: 0,
+            total: 0,
+          },
+        },
+        '60min': {
+          name: 'Deep Work',
+          duration: 3600,
+          count: 0,
+          isRunning: false,
+          timeSpent: {
+            currentTime: 0,
+            total: 0,
+          },
+        },
+      },
+      totalTime: 0,
+    },
   },
   MasterTime: {},
   CodingJournal: {},
@@ -46,35 +81,7 @@ const projectsSlice = createSlice({
     },
     updateProjectTime: (state, action) => {
       const { key, value } = action.payload;
-      try {
-        const { totalTime, date, cycleType, duration, count } = value;
-
-        const payload: Payload = {
-          [date]: {
-            cycles: {
-              [cycleType]: { duration },
-            },
-            totalTime: totalTime,
-          },
-        };
-        if (state[key][date]) {
-          if (state[key][date].cycles) {
-            payload[date].cycles = {
-              ...state[key][date].cycles,
-              ...payload[date].cycles,
-            };
-          }
-          // if (state[key][date].totalTime) {
-          //   payload[date].totalTime = state[key][date].totalTime + totalTime;
-          // }
-        }
-        if (count) {
-          payload[date].cycles[cycleType].count = count;
-        }
-        state[key] = payload;
-      } catch (error) {
-        console.log(error);
-      }
+      console.log(key, value);
     },
   },
 });
