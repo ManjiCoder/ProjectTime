@@ -1,3 +1,7 @@
+import { updateProjectTime } from '@/redux/features/projects/projectsSlice';
+import { useAppDispatch } from '@/redux/hooks/hooks';
+import { format } from 'date-fns';
+import { useState } from 'react';
 import { Button } from './ui/button';
 
 type TimerProps = {
@@ -7,9 +11,30 @@ type TimerProps = {
 };
 
 export default function Timer({ projectName, name, duration }: TimerProps) {
+  const [timerID, setTimerID] = useState<NodeJS.Timeout | null>(null);
+  const currentDate = format(new Date(), 'dd-MM-yyyy');
   const type = `${duration}min`;
+
+  const dispatch = useAppDispatch();
+
+  const startTimer = () => {
+    const payload = {
+      projectName,
+      cycleType: type,
+      currentDate,
+    };
+    // console.table(payload);
+    dispatch(updateProjectTime(payload));
+  };
   const handlerTimer = () => {
-    console.table({ projectName, name, duration, type });
+    if (timerID) {
+      clearInterval(timerID);
+    }
+    const newTimerID = setInterval(startTimer, 1000);
+    setTimerID(newTimerID);
+    setTimeout(() => {
+      clearInterval(newTimerID);
+    }, 4000);
   };
 
   return (

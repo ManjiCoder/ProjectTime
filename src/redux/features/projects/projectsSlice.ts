@@ -80,8 +80,8 @@ const projectsSlice = createSlice({
       }
     },
     updateProjectTime: (state, action) => {
-      const { key, value } = action.payload;
-      console.log(key, value);
+      const p = action.payload;
+      console.table(p);
     },
   },
 });
