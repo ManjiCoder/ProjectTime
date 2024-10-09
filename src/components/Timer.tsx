@@ -3,16 +3,11 @@ import { Button } from './ui/button';
 type TimerProps = {
   projectName: string | string[];
   name: string;
-  type: string;
   duration: number;
 };
 
-export default function Timer({
-  projectName,
-  name,
-  duration,
-  type,
-}: TimerProps) {
+export default function Timer({ projectName, name, duration }: TimerProps) {
+  const type = `${duration}min`;
   const handlerTimer = () => {
     console.table({ projectName, name, duration, type });
   };

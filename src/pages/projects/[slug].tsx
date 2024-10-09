@@ -30,9 +30,8 @@ export default function Project() {
           return (
             <Timer
               projectName={slug}
-              key={`${duration}min`}
+              key={duration}
               name={name}
-              type={`${duration}min`}
               duration={duration}
             />
           );
