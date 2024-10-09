@@ -13,7 +13,7 @@ export default function Project() {
   const router = useRouter();
   const slug = (router.query.slug as string | undefined) || '';
   const projects = useAppSelector((state) => state.projects);
-  console.log(projects[slug]);
+  // console.log(projects[slug]);
 
   return (
     <PageWrapper className=''>
