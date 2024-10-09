@@ -13,7 +13,7 @@ interface Cycle {
   isRunning: boolean;
   timeSpent: TimeSpent;
 }
-interface ProjectData {
+export interface ProjectData {
   [key: string]: {
     cycles: {
       [key: string]: Cycle;

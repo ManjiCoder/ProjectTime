@@ -20,8 +20,8 @@ export default function Timer({ projectName, name, duration }: TimerProps) {
   const startTimer = () => {
     const payload = {
       projectName,
-      cycleType: type,
       currentDate,
+      cycleType: type,
     };
     // console.table(payload);
     dispatch(updateProjectTime(payload));
