@@ -30,7 +30,7 @@ const initialState: SliceState = {
     '07-10-2024': {
       cycles: {
         '25min': {
-          name: 'work',
+          name: 'Work',
           duration: 1500,
           count: 0,
           isRunning: false,

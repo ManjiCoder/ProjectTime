@@ -4,9 +4,9 @@ import { useAppSelector } from '@/redux/hooks/hooks';
 import { useRouter } from 'next/router';
 
 const cycles = [
-  { name: 'work', duration: 25 },
-  { name: 'intensive Focus', duration: 45 },
-  { name: 'deep Work', duration: 60 },
+  { name: 'Work', duration: 25 },
+  { name: 'Intensive Focus', duration: 45 },
+  { name: 'Deep Work', duration: 60 },
 ];
 
 export default function Project() {
@@ -30,8 +30,9 @@ export default function Project() {
           return (
             <Timer
               projectName={slug}
-              key={duration}
+              key={`${duration}min`}
               name={name}
+              type={`${duration}min`}
               duration={duration}
             />
           );
