@@ -22,7 +22,7 @@ export default function Project() {
       }
     }
   }, [currentDate, isProject, projects, slug]);
-  console.log({ isProject, project });
+  // console.log({ isProject, project });
 
   return (
     <PageWrapper className=''>

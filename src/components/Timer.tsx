@@ -4,7 +4,7 @@ import {
   updateProjectTimer,
 } from '@/redux/features/projects/projectsSlice';
 import { useAppDispatch } from '@/redux/hooks/hooks';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button } from './ui/button';
 
 type TimerProps = {
@@ -32,7 +32,7 @@ export default function Timer({
   const stopTimer = () => {
     if (timerID) {
       const payload: Payload = {
-        projectName: name,
+        projectName,
         currentDate,
         cycleType: type,
       };
@@ -70,6 +70,19 @@ export default function Timer({
 
     setTimerID(newTimerID);
   };
+
+  useEffect(() => {
+    if (isRunning) {
+      startTimer();
+      return () => {
+        if (timerID) {
+          clearInterval(timerID);
+        }
+      };
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <div
       key={duration}
