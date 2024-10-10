@@ -31,32 +31,48 @@ export default function Project() {
   }, [currentDate, isProject, projects, slug]);
   console.log({ isProject, project });
 
-  const startTimer = (key: string, sec: number) => {
+  const stopTimer = (key: string) => {
+    if (timerID) {
+      const payload: Payload = {
+        projectName: slug,
+        currentDate,
+        cycleType: key,
+      };
+      clearInterval(timerID);
+      dispatch(stopProjectTimer(payload));
+    }
+  };
+
+  const startTimer = (key: string, duration: number, sec: number) => {
     if (timerID) {
       clearInterval(timerID);
     }
+    let currentSec = sec;
     const newTimerID = setInterval(() => {
+      currentSec += 1;
       const payload: Payload = {
         projectName: slug,
         currentDate,
         cycleType: key,
       };
-      console.table({ ...payload, sec });
+      console.table({ ...payload, sec: currentSec });
       dispatch(updateProjectTimer(payload));
+
+      if (currentSec >= duration) {
+        const payload: Payload = {
+          projectName: slug,
+          currentDate,
+          cycleType: key,
+        };
+        clearInterval(newTimerID);
+        dispatch(stopProjectTimer(payload));
+        alert('Success');
+      }
     }, 1000);
 
     setTimerID(newTimerID);
-
-    setTimeout(() => {
-      const payload: Payload = {
-        projectName: slug,
-        currentDate,
-        cycleType: key,
-      };
-      clearInterval(newTimerID);
-      dispatch(stopProjectTimer(payload));
-    }, 5000);
   };
+
   return (
     <PageWrapper className=''>
       <h1 className='scroll-m-20 text-center pb-2 text-3xl font-semibold tracking-tight first:mt-0'>
@@ -69,6 +85,7 @@ export default function Project() {
         {/* All Projects will shown here */}
 
         {isProject &&
+          project &&
           Object.values(project).map(({ name, duration, isRunning, sec }) => {
             const type = `${duration / 60}min`;
             return (
@@ -78,8 +95,9 @@ export default function Project() {
                 duration={duration}
                 isRunning={isRunning}
                 startTimer={() => {
-                  return startTimer(type, sec);
+                  return startTimer(type, duration, sec);
                 }}
+                stopTimer={() => stopTimer(type)}
                 sec={sec}
               />
             );
