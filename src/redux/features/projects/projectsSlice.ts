@@ -1,5 +1,6 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { RootState } from '@/redux/store';
+import { defaultTimeData } from '@/types';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface Cycle {
@@ -39,18 +40,24 @@ const projectsSlice = createSlice({
         console.log(error);
       }
     },
-    setProjectState: (state, action) => {},
-    updateProjectTime: (state, action) => {},
-    stopProjectTimer: (state, action) => {},
+    setProjectState: (state, action: PayloadAction<Payload>) => {
+      const { projectName, currentDate } = action.payload;
+      try {
+        state[projectName][currentDate] = defaultTimeData;
+      } catch (error) {
+        console.log('not works');
+      }
+    },
   },
 });
 
-export const {
-  addProject,
-  setProjectState,
-  updateProjectTime,
-  stopProjectTimer,
-} = projectsSlice.actions;
+export const { addProject, setProjectState } = projectsSlice.actions;
 // Other code such as selectors can use the imported `RootState` type
 export const selectProjects = (state: RootState) => state.projects;
 export default projectsSlice.reducer;
+export interface Payload {
+  projectName: string;
+  currentDate: string;
+  cycleType?: string;
+  increamentCount?: boolean;
+}
