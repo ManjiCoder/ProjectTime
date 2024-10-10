@@ -26,12 +26,12 @@ export default function Timer({
         {name} - {duration / 60} min
       </h2>
       <h2 className='scroll-m-20 capitalize text-3xl font-semibold tracking-tight line-clamp-1'>
-        <span>
+        <span id={`${duration/60}Min`}>
           {Math.round(Math.floor(sec / 60))
             .toString()
             .padStart(2, '0')}
         </span>{' '}
-        : <span>{(sec % 60).toString().padStart(2, '0')}</span>
+        : <span id={`${duration/60}Sec`}>{(sec % 60).toString().padStart(2, '0')}</span>
       </h2>
 
       {isRunning ? (

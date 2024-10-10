@@ -99,8 +99,14 @@ const projectsSlice = createSlice({
     },
     stopProjectTimer: (state, action) => {
       try {
-        const { projectName, currentDate, cycleType } = action.payload;
+        const { projectName, currentDate, cycleType , increamentCount=false} = action.payload;
+        if (!state[projectName][currentDate]) {
+          state[projectName][currentDate] = defaultTimeData;
+        }
         state[projectName][currentDate].cycles[cycleType].isRunning = false;
+        if(increamentCount){
+          state[projectName][currentDate].cycles[cycleType].count+=1
+        }
       } catch (error) {
         console.log(error);
       }
