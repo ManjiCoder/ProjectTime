@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { RootState } from '@/redux/store';
+import { defaultTimeData } from '@/types';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface TimeSpent {
@@ -25,41 +26,6 @@ interface SliceState {
   [projectName: string]: ProjectData;
 }
 
-const defaultTimeData = {
-  cycles: {
-    '25min': {
-      name: 'Work',
-      duration: 1500,
-      count: 0,
-      isRunning: false,
-      timeSpent: {
-        sec: 0,
-        total: 0,
-      },
-    },
-    '45min': {
-      name: 'Intensive Focus',
-      duration: 2700,
-      count: 0,
-      isRunning: false,
-      timeSpent: {
-        sec: 0,
-        total: 0,
-      },
-    },
-    '60min': {
-      name: 'Deep Work',
-      duration: 3600,
-      count: 0,
-      isRunning: false,
-      timeSpent: {
-        sec: 0,
-        total: 0,
-      },
-    },
-  },
-  totalTime: 0,
-};
 const initialState: SliceState = {
   ProjectTime: {},
   MasterTime: {},
@@ -99,13 +65,18 @@ const projectsSlice = createSlice({
     },
     stopProjectTimer: (state, action) => {
       try {
-        const { projectName, currentDate, cycleType , increamentCount=false} = action.payload;
+        const {
+          projectName,
+          currentDate,
+          cycleType,
+          increamentCount = false,
+        } = action.payload;
         if (!state[projectName][currentDate]) {
           state[projectName][currentDate] = defaultTimeData;
         }
         state[projectName][currentDate].cycles[cycleType].isRunning = false;
-        if(increamentCount){
-          state[projectName][currentDate].cycles[cycleType].count+=1
+        if (increamentCount) {
+          state[projectName][currentDate].cycles[cycleType].count += 1;
         }
       } catch (error) {
         console.log(error);
@@ -121,5 +92,5 @@ export const {
   stopProjectTimer,
 } = projectsSlice.actions;
 // Other code such as selectors can use the imported `RootState` type
-export const selectCount = (state: RootState) => state.projects;
+export const selectProjects = (state: RootState) => state.projects;
 export default projectsSlice.reducer;

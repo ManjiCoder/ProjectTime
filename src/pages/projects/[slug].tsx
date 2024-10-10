@@ -1,20 +1,19 @@
 import PageWrapper from '@/components/layout/PageWrapper';
 import Timer from '@/components/Timer';
 import {
-  setProjectState,
   stopProjectTimer,
   updateProjectTime,
 } from '@/redux/features/projects/projectsSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks/hooks';
 import { format } from 'date-fns';
 import { useRouter } from 'next/router';
-import { useLayoutEffect, useState } from 'react';
+import { useState } from 'react';
 
 interface Payload {
-  projectName:string;
-  currentDate:string;
-  cycleType:string;
-  increamentCount?:boolean
+  projectName: string;
+  currentDate: string;
+  cycleType: string;
+  increamentCount?: boolean;
 }
 
 export default function Project() {
@@ -23,15 +22,6 @@ export default function Project() {
   const projects = useAppSelector((state) => state.projects);
   const currentDate = format(new Date(), 'dd-MM-yyyy');
   const projectInfo = projects[slug];
-
-  useLayoutEffect(() => {
-    const payload = {
-      name: slug,
-      date: currentDate,
-    };
-    dispatch(setProjectState(payload));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   const [timerID, setTimerID] = useState<NodeJS.Timeout | null>(null);
 
@@ -43,8 +33,8 @@ export default function Project() {
     }
     setTimerID(null);
 
-    const payload:Payload = {
-      projectName:slug,
+    const payload: Payload = {
+      projectName: slug,
       currentDate,
       cycleType: type,
     };
@@ -55,23 +45,25 @@ export default function Project() {
     if (timerID) {
       clearInterval(timerID);
     }
-    const payload:Payload = {
+    const payload: Payload = {
       projectName: slug,
       currentDate,
       cycleType: type,
     };
 
     const newTimerID = setInterval(() => {
-      const currentSec =(document.getElementById(`${duration/60}Sec`))?.innerText||'0';
-      const currentMin =(document.getElementById(`${duration/60}Min`))?.innerText||'0';
-      const totalTime = parseInt(currentMin)*60+ parseInt(currentSec)
+      const currentSec =
+        document.getElementById(`${duration / 60}Sec`)?.innerText || '0';
+      const currentMin =
+        document.getElementById(`${duration / 60}Min`)?.innerText || '0';
+      const totalTime = parseInt(currentMin) * 60 + parseInt(currentSec);
       // console.table(payload);
       dispatch(updateProjectTime(payload));
-      if(totalTime>= duration-1){
-        clearInterval(newTimerID)
-        payload.increamentCount =true
-        dispatch(stopProjectTimer(payload))
-        alert('Congrats')
+      if (totalTime >= duration - 1) {
+        clearInterval(newTimerID);
+        payload.increamentCount = true;
+        dispatch(stopProjectTimer(payload));
+        alert('Congrats');
       }
     }, 1000);
     setTimerID(newTimerID);
