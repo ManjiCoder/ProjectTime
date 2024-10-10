@@ -4,8 +4,8 @@ type TimerProps = {
   name: string;
   duration: number;
   isRunning: boolean;
-  startTimer: () => void;
-  stopTimer: () => void;
+  startTimer?: () => void;
+  stopTimer?: () => void;
   sec: number;
 };
 

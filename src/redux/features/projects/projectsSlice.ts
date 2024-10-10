@@ -40,6 +40,17 @@ const projectsSlice = createSlice({
         console.log('reducer not works');
       }
     },
+    updateProjectTimer: (state, action: PayloadAction<Payload>) => {
+      const { projectName, currentDate, cycleType } = action.payload;
+      try {
+        if (cycleType) {
+          state[projectName][currentDate].cycles[cycleType].isRunning = true;
+          state[projectName][currentDate].cycles[cycleType].sec += 1;
+        }
+      } catch (error) {
+        console.log('reducer not works');
+      }
+    },
     setProjectState: (state, action: PayloadAction<Payload>) => {
       const { projectName, currentDate } = action.payload;
       try {
@@ -48,10 +59,25 @@ const projectsSlice = createSlice({
         console.log('reducer not works');
       }
     },
+    stopProjectTimer: (state, action: PayloadAction<Payload>) => {
+      const { projectName, currentDate, cycleType } = action.payload;
+      try {
+        if (cycleType) {
+          state[projectName][currentDate].cycles[cycleType].isRunning = false;
+        }
+      } catch (error) {
+        console.log('reducer not works');
+      }
+    },
   },
 });
 
-export const { addProject, setProjectState } = projectsSlice.actions;
+export const {
+  addProject,
+  updateProjectTimer,
+  stopProjectTimer,
+  setProjectState,
+} = projectsSlice.actions;
 // Other code such as selectors can use the imported `RootState` type
 export const selectProjects = (state: RootState) => state.projects;
 export default projectsSlice.reducer;
