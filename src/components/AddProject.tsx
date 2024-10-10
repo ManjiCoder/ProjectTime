@@ -31,7 +31,7 @@ export default function AddProject() {
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      dispatch(addProject([projectName, { name: projectName, value: 30 }]));
+      dispatch(addProject({ projectName }));
       setProjectName('');
       closeModal();
     } catch (error) {

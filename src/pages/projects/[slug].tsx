@@ -1,5 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import PageWrapper from '@/components/layout/PageWrapper';
-import Timer from '@/components/Timer';
 import { useAppSelector } from '@/redux/hooks/hooks';
 import { format } from 'date-fns';
 import { useRouter } from 'next/router';
@@ -14,7 +14,7 @@ export default function Project() {
 
   // const [timerID, setTimerID] = useState<NodeJS.Timeout | null>(null);
   const project = {};
-  console.log(projects[slug].hasOwnProperty(currentDate));
+  console.log(projects[slug]);
 
   return (
     <PageWrapper className=''>
@@ -27,7 +27,7 @@ export default function Project() {
       <section className='grid items-center justify-evenly sm:grid-cols-2 md:grid-cols-3 gap-5 pb-16'>
         {/* All Projects will shown here */}
 
-        {project &&
+        {/* {false &&
           Object.values(project).map(({ name, duration, isRunning, sec }) => {
             const type = `${duration / 60}min`;
             return (
@@ -38,7 +38,7 @@ export default function Project() {
                 isRunning={isRunning}
               />
             );
-          })}
+          })} */}
       </section>
     </PageWrapper>
   );

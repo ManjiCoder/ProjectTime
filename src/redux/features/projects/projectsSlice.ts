@@ -32,12 +32,12 @@ const projectsSlice = createSlice({
   name: 'projects',
   initialState,
   reducers: {
-    addProject: (state, action: PayloadAction<[string, any]>) => {
+    addProject: (state, action: PayloadAction<{ projectName: string }>) => {
       try {
-        const [key, value] = action.payload;
-        state[key] = value;
+        const { projectName } = action.payload;
+        state[projectName] = {};
       } catch (error) {
-        console.log(error);
+        console.log('reducer not works');
       }
     },
     setProjectState: (state, action: PayloadAction<Payload>) => {
@@ -45,7 +45,7 @@ const projectsSlice = createSlice({
       try {
         state[projectName][currentDate] = defaultTimeData;
       } catch (error) {
-        console.log('not works');
+        console.log('reducer not works');
       }
     },
   },

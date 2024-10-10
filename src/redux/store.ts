@@ -14,6 +14,7 @@ import projectsSlice from './features/projects/projectsSlice';
 
 const persistConfig = {
   key: 'root',
+  version: 1,
   storage,
   whitelist: ['projects'],
 };
@@ -24,7 +25,7 @@ const rootReducer = combineReducers({
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
-export const store = configureStore({
+const store = configureStore({
   reducer: persistedReducer,
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
@@ -33,6 +34,8 @@ export const store = configureStore({
       },
     }),
 });
+
+export default store;
 
 export const persistor = persistStore(store);
 
