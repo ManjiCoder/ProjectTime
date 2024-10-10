@@ -1,18 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { RootState } from '@/redux/store';
-import { defaultTimeData } from '@/types';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-interface TimeSpent {
-  sec: number;
-  total: number;
-}
 interface Cycle {
   name: string;
   duration: number;
   count: number;
   isRunning: boolean;
-  timeSpent: TimeSpent;
+  sec: number;
 }
 export interface ProjectData {
   [key: string]: {
@@ -44,44 +39,9 @@ const projectsSlice = createSlice({
         console.log(error);
       }
     },
-    setProjectState: (state, action) => {
-      try {
-        const { name, date } = action.payload;
-        state[name][date] = defaultTimeData;
-      } catch (error) {
-        console.log(error);
-      }
-    },
-    updateProjectTime: (state, action) => {
-      const { projectName, currentDate, cycleType } = action.payload;
-
-      if (!state[projectName][currentDate]) {
-        state[projectName][currentDate] = defaultTimeData;
-      } else {
-        state[projectName][currentDate].cycles[cycleType].isRunning = true;
-        state[projectName][currentDate].cycles[cycleType].timeSpent.sec += 1;
-        state[projectName][currentDate].cycles[cycleType].timeSpent.total += 1;
-      }
-    },
-    stopProjectTimer: (state, action) => {
-      try {
-        const {
-          projectName,
-          currentDate,
-          cycleType,
-          increamentCount = false,
-        } = action.payload;
-        if (!state[projectName][currentDate]) {
-          state[projectName][currentDate] = defaultTimeData;
-        }
-        state[projectName][currentDate].cycles[cycleType].isRunning = false;
-        if (increamentCount) {
-          state[projectName][currentDate].cycles[cycleType].count += 1;
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    },
+    setProjectState: (state, action) => {},
+    updateProjectTime: (state, action) => {},
+    stopProjectTimer: (state, action) => {},
   },
 });
 

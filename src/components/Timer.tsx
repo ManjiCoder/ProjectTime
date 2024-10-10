@@ -17,7 +17,6 @@ export default function Timer({
   stopTimer,
   sec,
 }: TimerProps) {
-  console.log({ isRunning });
   return (
     <div
       key={duration}

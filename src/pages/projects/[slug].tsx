@@ -20,8 +20,9 @@ export default function Project() {
   const router = useRouter();
   const slug = (router.query.slug as string | undefined) || '';
   const projects = useAppSelector((state) => state.projects);
+  const timer = useAppSelector((state) => state.timer);
   const currentDate = format(new Date(), 'dd-MM-yyyy');
-  const projectInfo = projects[slug];
+  const projectName = projects[slug];
 
   const [timerID, setTimerID] = useState<NodeJS.Timeout | null>(null);
 
@@ -81,29 +82,20 @@ export default function Project() {
       <section className='grid items-center justify-evenly sm:grid-cols-2 md:grid-cols-3 gap-5 pb-16'>
         {/* All Projects will shown here */}
 
-        {projectInfo &&
-          projectInfo[currentDate] &&
-          Object.values(projectInfo[currentDate].cycles).map(
-            ({ name, duration }) => {
-              const type = `${duration / 60}min`;
-              const sec =
-                projectInfo[currentDate]?.cycles[type]?.timeSpent?.sec || 0;
-              const isRunning =
-                projectInfo[currentDate]?.cycles[type]?.isRunning || false;
-
-              return (
-                <Timer
-                  key={duration}
-                  name={name}
-                  duration={duration}
-                  isRunning={isRunning}
-                  startTimer={() => startTimer(type, duration)}
-                  stopTimer={() => stopTimer(type)}
-                  sec={sec}
-                />
-              );
-            }
-          )}
+        {Object.values(timer).map(({ name, duration, isRunning, sec }) => {
+          const type = `${duration / 60}min`;
+          return (
+            <Timer
+              key={duration}
+              name={name}
+              duration={duration}
+              isRunning={isRunning}
+              startTimer={() => startTimer(type, duration)}
+              stopTimer={() => stopTimer(type)}
+              sec={sec}
+            />
+          );
+        })}
       </section>
     </PageWrapper>
   );

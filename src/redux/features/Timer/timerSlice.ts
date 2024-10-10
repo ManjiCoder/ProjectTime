@@ -2,7 +2,7 @@ import { RootState } from '@/redux/store';
 import { defaultTimeData } from '@/types';
 import { createSlice } from '@reduxjs/toolkit';
 
-const initialState = defaultTimeData;
+const initialState = defaultTimeData.cycles;
 
 const timerSlice = createSlice({
   name: 'timer',
@@ -12,7 +12,7 @@ const timerSlice = createSlice({
       console.log(action.payload);
     },
     resetTimer: () => {
-      return defaultTimeData;
+      return initialState;
     },
   },
 });

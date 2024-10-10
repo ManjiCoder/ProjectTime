@@ -16,30 +16,21 @@ export const defaultTimeData = {
       duration: 1500,
       count: 0,
       isRunning: false,
-      timeSpent: {
-        sec: 0,
-        total: 0,
-      },
+      sec: 0,
     },
     '45min': {
       name: 'Intensive Focus',
       duration: 2700,
       count: 0,
       isRunning: false,
-      timeSpent: {
-        sec: 0,
-        total: 0,
-      },
+      sec: 0,
     },
     '60min': {
       name: 'Deep Work',
       duration: 3600,
       count: 0,
       isRunning: false,
-      timeSpent: {
-        sec: 0,
-        total: 0,
-      },
+      sec: 0,
     },
   },
   totalTime: 0,
