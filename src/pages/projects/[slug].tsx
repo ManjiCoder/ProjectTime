@@ -1,22 +1,15 @@
 import PageWrapper from '@/components/layout/PageWrapper';
 import Timer from '@/components/Timer';
-import {
-  Payload,
-  stopProjectTimer,
-  updateProjectTimer,
-} from '@/redux/features/projects/projectsSlice';
-import { useAppDispatch, useAppSelector } from '@/redux/hooks/hooks';
+import { useAppSelector } from '@/redux/hooks/hooks';
 import { format } from 'date-fns';
 import { useRouter } from 'next/router';
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 
 export default function Project() {
   const router = useRouter();
   const slug = (router.query.slug as string | undefined) || '';
   const currentDate = format(new Date(), 'dd-MM-yyyy');
-  const [timerID, setTimerID] = useState<NodeJS.Timeout | null>(null);
 
-  const dispatch = useAppDispatch();
   const projects = useAppSelector((state) => state.projects);
   const isProject = projects[slug];
   const project = useMemo(() => {
@@ -30,48 +23,6 @@ export default function Project() {
     }
   }, [currentDate, isProject, projects, slug]);
   console.log({ isProject, project });
-
-  const stopTimer = (key: string) => {
-    if (timerID) {
-      const payload: Payload = {
-        projectName: slug,
-        currentDate,
-        cycleType: key,
-      };
-      clearInterval(timerID);
-      dispatch(stopProjectTimer(payload));
-    }
-  };
-
-  const startTimer = (key: string, duration: number, sec: number) => {
-    if (timerID) {
-      clearInterval(timerID);
-    }
-    let currentSec = sec;
-    const newTimerID = setInterval(() => {
-      currentSec += 1;
-      const payload: Payload = {
-        projectName: slug,
-        currentDate,
-        cycleType: key,
-      };
-      console.table({ ...payload, sec: currentSec });
-      dispatch(updateProjectTimer(payload));
-
-      if (currentSec >= duration) {
-        const payload: Payload = {
-          projectName: slug,
-          currentDate,
-          cycleType: key,
-        };
-        clearInterval(newTimerID);
-        dispatch(stopProjectTimer(payload));
-        alert('Success');
-      }
-    }, 1000);
-
-    setTimerID(newTimerID);
-  };
 
   return (
     <PageWrapper className=''>
@@ -90,14 +41,13 @@ export default function Project() {
             const type = `${duration / 60}min`;
             return (
               <Timer
+                projectName={slug}
+                currentDate={currentDate}
                 key={duration}
                 name={name}
+                type={type}
                 duration={duration}
                 isRunning={isRunning}
-                startTimer={() => {
-                  return startTimer(type, duration, sec);
-                }}
-                stopTimer={() => stopTimer(type)}
                 sec={sec}
               />
             );

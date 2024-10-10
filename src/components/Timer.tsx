@@ -1,22 +1,75 @@
+import {
+  Payload,
+  stopProjectTimer,
+  updateProjectTimer,
+} from '@/redux/features/projects/projectsSlice';
+import { useAppDispatch } from '@/redux/hooks/hooks';
+import { useState } from 'react';
 import { Button } from './ui/button';
 
 type TimerProps = {
   name: string;
+  projectName: string;
+  currentDate: string;
+  type: string;
   duration: number;
   isRunning: boolean;
-  startTimer?: () => void;
-  stopTimer?: () => void;
   sec: number;
 };
 
 export default function Timer({
   name,
+  projectName,
+  currentDate,
+  type,
   duration,
   isRunning,
-  startTimer,
-  stopTimer,
   sec,
 }: TimerProps) {
+  const [timerID, setTimerID] = useState<NodeJS.Timeout | null>(null);
+  const dispatch = useAppDispatch();
+
+  const stopTimer = () => {
+    if (timerID) {
+      const payload: Payload = {
+        projectName: name,
+        currentDate,
+        cycleType: type,
+      };
+      clearInterval(timerID);
+      dispatch(stopProjectTimer(payload));
+    }
+  };
+
+  const startTimer = () => {
+    if (timerID) {
+      clearInterval(timerID);
+    }
+    let currentSec = sec;
+    const newTimerID = setInterval(() => {
+      currentSec += 1;
+      const payload: Payload = {
+        projectName,
+        currentDate,
+        cycleType: type,
+      };
+      console.table({ ...payload, sec: currentSec });
+      dispatch(updateProjectTimer(payload));
+
+      if (currentSec >= duration) {
+        const payload: Payload = {
+          projectName,
+          currentDate,
+          cycleType: type,
+        };
+        clearInterval(newTimerID);
+        dispatch(stopProjectTimer(payload));
+        alert('Success');
+      }
+    }, 1000);
+
+    setTimerID(newTimerID);
+  };
   return (
     <div
       key={duration}
