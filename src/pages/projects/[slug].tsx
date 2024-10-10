@@ -1,9 +1,6 @@
 import PageWrapper from '@/components/layout/PageWrapper';
 import Timer from '@/components/Timer';
-import {
-  stopProjectTimer,
-  updateProjectTime,
-} from '@/redux/features/projects/projectsSlice';
+import { TimerKeys, updateTimer } from '@/redux/features/Timer/timerSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks/hooks';
 import { format } from 'date-fns';
 import { useRouter } from 'next/router';
@@ -28,47 +25,29 @@ export default function Project() {
 
   const dispatch = useAppDispatch();
 
-  const stopTimer = (type: string) => {
+  const stopTimer = (type: TimerKeys) => {
     if (timerID) {
       clearInterval(timerID);
     }
     setTimerID(null);
-
-    const payload: Payload = {
-      projectName: slug,
-      currentDate,
-      cycleType: type,
-    };
-    dispatch(stopProjectTimer(payload));
+    dispatch(updateTimer({ key: type, type: 'stop' }));
   };
 
-  const startTimer = (type: string, duration: number) => {
+  const startTimer = (type: TimerKeys, duration: number) => {
     if (timerID) {
       clearInterval(timerID);
     }
-    const payload: Payload = {
-      projectName: slug,
-      currentDate,
-      cycleType: type,
-    };
 
     const newTimerID = setInterval(() => {
-      const currentSec =
-        document.getElementById(`${duration / 60}Sec`)?.innerText || '0';
-      const currentMin =
-        document.getElementById(`${duration / 60}Min`)?.innerText || '0';
-      const totalTime = parseInt(currentMin) * 60 + parseInt(currentSec);
       // console.table(payload);
-      dispatch(updateProjectTime(payload));
-      if (totalTime >= duration - 1) {
-        clearInterval(newTimerID);
-        payload.increamentCount = true;
-        dispatch(stopProjectTimer(payload));
-        alert('Congrats');
-      }
+      dispatch(updateTimer({ key: type, type: 'increment' }));
     }, 1000);
     setTimerID(newTimerID);
+
     // TODO: clearInterval with timer is over
+    setTimeout(() => {
+      dispatch(updateTimer({ key: type, type: 'stop' }));
+    }, 5000);
   };
 
   return (
