@@ -18,11 +18,11 @@ export interface ProjectData {
     totalTime: number;
   };
 }
-interface SliceState {
+export interface projectState {
   [projectName: string]: ProjectData;
 }
 
-const initialState: SliceState = {
+const initialState: projectState = {
   ProjectTime: {},
   MasterTime: {},
   CodingJournal: {},
@@ -54,16 +54,24 @@ const projectsSlice = createSlice({
     setProjectState: (state, action: PayloadAction<Payload>) => {
       const { projectName, currentDate } = action.payload;
       try {
-        state[projectName][currentDate] = defaultTimeData;
+        state[projectName][currentDate] = {
+          ...defaultTimeData,
+          ...state[projectName][currentDate],
+        };
       } catch (error) {
         console.log('reducer not works');
       }
     },
     stopProjectTimer: (state, action: PayloadAction<Payload>) => {
-      const { projectName, currentDate, cycleType } = action.payload;
+      const { projectName, currentDate, cycleType, increamentCount } =
+        action.payload;
       try {
         if (cycleType) {
           state[projectName][currentDate].cycles[cycleType].isRunning = false;
+          if (increamentCount) {
+            state[projectName][currentDate].cycles[cycleType].count += 1;
+            state[projectName][currentDate].cycles[cycleType].sec = 0;
+          }
         }
       } catch (error) {
         console.log('reducer not works');

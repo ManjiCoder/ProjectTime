@@ -67,7 +67,7 @@ export default function Timer({
         currentDate,
         cycleType: type,
       };
-      console.table({ ...payload, sec: currentSec });
+      // console.table({ ...payload, sec: currentSec });
       dispatch(updateProjectTimer(payload));
 
       if (currentSec >= duration) {
@@ -75,6 +75,7 @@ export default function Timer({
           projectName,
           currentDate,
           cycleType: type,
+          increamentCount: true,
         };
         clearIntervals();
         dispatch(stopProjectTimer(payload));
