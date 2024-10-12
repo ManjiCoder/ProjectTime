@@ -29,7 +29,9 @@ export default function Timer({
 }: TimerProps) {
   // const [timerID, setTimerID] = useState<NodeJS.Timeout | null>(null);
   const cyclesKey = Object.keys(defaultTimeData.cycles);
-  const timerId = useRef({
+  const timerId = useRef<{
+    [x: string]: NodeJS.Timeout[];
+  }>({
     [cyclesKey[0]]: [],
     [cyclesKey[1]]: [],
     [cyclesKey[2]]: [],
