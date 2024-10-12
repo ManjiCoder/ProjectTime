@@ -54,7 +54,10 @@ const projectsSlice = createSlice({
     setProjectState: (state, action: PayloadAction<Payload>) => {
       const { projectName, currentDate } = action.payload;
       try {
-        state[projectName][currentDate] = defaultTimeData;
+        state[projectName][currentDate] = {
+          ...defaultTimeData,
+          ...state[projectName][currentDate],
+        };
       } catch (error) {
         console.log('reducer not works');
       }
