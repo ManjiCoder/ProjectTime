@@ -4,7 +4,8 @@ import {
   updateProjectTimer,
 } from '@/redux/features/projects/projectsSlice';
 import { useAppDispatch } from '@/redux/hooks/hooks';
-import { useEffect, useState } from 'react';
+import { defaultTimeData } from '@/types';
+import { useEffect, useRef } from 'react';
 import { Button } from './ui/button';
 
 type TimerProps = {
@@ -26,9 +27,22 @@ export default function Timer({
   isRunning,
   sec,
 }: TimerProps) {
-  const [timerID, setTimerID] = useState<NodeJS.Timeout | null>(null);
+  // const [timerID, setTimerID] = useState<NodeJS.Timeout | null>(null);
+  const cyclesKey = Object.keys(defaultTimeData.cycles);
+  const timerId = useRef({
+    [cyclesKey[0]]: [],
+    [cyclesKey[1]]: [],
+    [cyclesKey[2]]: [],
+  });
+  const timerID = timerId.current;
   const dispatch = useAppDispatch();
 
+  const clearIntervals = () => {
+    timerId.current[type].map((id) => {
+      clearInterval(id);
+      timerId.current[type].shift();
+    });
+  };
   const stopTimer = () => {
     if (timerID) {
       const payload: Payload = {
@@ -36,15 +50,13 @@ export default function Timer({
         currentDate,
         cycleType: type,
       };
-      clearInterval(timerID);
+      clearIntervals();
       dispatch(stopProjectTimer(payload));
     }
   };
 
   const startTimer = () => {
-    if (timerID) {
-      clearInterval(timerID);
-    }
+    clearIntervals();
     let currentSec = sec;
     const newTimerID = setInterval(() => {
       currentSec += 1;
@@ -62,22 +74,20 @@ export default function Timer({
           currentDate,
           cycleType: type,
         };
-        clearInterval(newTimerID);
+        clearIntervals();
         dispatch(stopProjectTimer(payload));
         alert('Success');
       }
     }, 1000);
 
-    setTimerID(newTimerID);
+    timerId.current[type].push(newTimerID);
   };
 
   useEffect(() => {
     if (isRunning) {
       startTimer();
       return () => {
-        if (timerID) {
-          clearInterval(timerID);
-        }
+        clearIntervals();
       };
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
