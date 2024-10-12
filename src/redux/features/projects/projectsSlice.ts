@@ -18,11 +18,11 @@ export interface ProjectData {
     totalTime: number;
   };
 }
-interface SliceState {
+export interface projectState {
   [projectName: string]: ProjectData;
 }
 
-const initialState: SliceState = {
+const initialState: projectState = {
   ProjectTime: {},
   MasterTime: {},
   CodingJournal: {},

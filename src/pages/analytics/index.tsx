@@ -13,15 +13,22 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from '@/components/ui/chart';
+import { projectState } from '@/redux/features/projects/projectsSlice';
 import { useAppSelector } from '@/redux/hooks/hooks';
 import { appInfo } from '@/types';
-import { eachDayOfInterval, endOfWeek, format, startOfWeek } from 'date-fns';
+import {
+  eachDayOfInterval,
+  endOfWeek,
+  format,
+  secondsToMinutes,
+  startOfWeek,
+} from 'date-fns';
 import { useMemo } from 'react';
 import { Bar, BarChart, CartesianGrid, LabelList, XAxis } from 'recharts';
 export const description = 'A bar chart with a label';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const generateWeeklyData = (data: any, today: any) => {
+const generateWeeklyData = (data: projectState, today: any) => {
   const weekStart = startOfWeek(today, { weekStartsOn: 1 });
 
   const weekEnd = endOfWeek(today, { weekStartsOn: 1 });
@@ -41,9 +48,17 @@ const generateWeeklyData = (data: any, today: any) => {
       date,
       timeSpend: 0,
     };
-    Object.keys(data).map((project) => {
-      if (data[project][date]) {
-        newPayload.timeSpend = data[project][date].totalTime;
+    Object.keys(data).map((projectKey) => {
+      const project = data[projectKey][date];
+      if (project) {
+        let time = 0;
+        Object.keys(project.cycles).map((cyclesKey) => {
+          time +=
+            project.cycles[cyclesKey].duration *
+              project.cycles[cyclesKey].count +
+            project.cycles[cyclesKey].sec;
+        });
+        newPayload.timeSpend = secondsToMinutes(time);
       }
     });
     payload.push(newPayload);
@@ -54,12 +69,11 @@ export default function Analytics() {
   const today = format(new Date(), 'dd-MMM-yy');
 
   const projects = useAppSelector((state) => state.projects);
-  const weeklyData = useMemo(
+  const chartData = useMemo(
     () => generateWeeklyData(projects, today),
     [projects, today]
   );
-  console.log(weeklyData);
-  const chartData = weeklyData;
+  console.table(chartData);
   const chartConfig = {
     timeSpend: {
       label: 'TimeSpend',
