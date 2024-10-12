@@ -8,3 +8,30 @@ export enum cycles {
   intensiveFocus = 45,
   deepWork = 60,
 }
+
+export const defaultTimeData = {
+  cycles: {
+    '25min': {
+      name: 'Work',
+      duration: 1500,
+      count: 0,
+      isRunning: false,
+      sec: 0,
+    },
+    '45min': {
+      name: 'Intensive Focus',
+      duration: 2700,
+      count: 0,
+      isRunning: false,
+      sec: 0,
+    },
+    '60min': {
+      name: 'Deep Work',
+      duration: 3600,
+      count: 0,
+      isRunning: false,
+      sec: 0,
+    },
+  },
+  totalTime: 0,
+};
