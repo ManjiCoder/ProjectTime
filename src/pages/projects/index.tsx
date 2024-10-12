@@ -1,6 +1,7 @@
 import AddProject from '@/components/AddProject';
 import PageWrapper from '@/components/layout/PageWrapper';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { Badge } from '@/components/ui/badge';
 import { setProjectState } from '@/redux/features/projects/projectsSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks/hooks';
 import { format } from 'date-fns';
@@ -30,12 +31,23 @@ export default function Projects() {
 
         {Object.keys(projects).length !== 0 &&
           Object.keys(projects).map((key) => {
+            const isRunning =
+              projects[key][currentDate] &&
+              Object.values(projects[key][currentDate].cycles).find(
+                ({ isRunning }) => isRunning === true
+              );
             return (
               <button
                 onClick={() => handleRoute(key)}
                 key={key}
                 className='relative grid w-full max-w-60 md:min-w-36 p-5 gap-5 place-items-center border border-primary/50 shadow shadow-primary/60 rounded-xl'
               >
+                {isRunning && (
+                  <span className='absolute right-2 top-2'>
+                    <Badge variant='destructive'>Running</Badge>
+                  </span>
+                )}
+
                 <Avatar>
                   {/* <AvatarImage src='https://github.com/shadcn.png' /> */}
                   <AvatarFallback className='flex place-items-center p-5 text-3xl font-semibold tracking-tight'>
