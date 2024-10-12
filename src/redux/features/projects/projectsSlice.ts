@@ -63,10 +63,15 @@ const projectsSlice = createSlice({
       }
     },
     stopProjectTimer: (state, action: PayloadAction<Payload>) => {
-      const { projectName, currentDate, cycleType } = action.payload;
+      const { projectName, currentDate, cycleType, increamentCount } =
+        action.payload;
       try {
         if (cycleType) {
           state[projectName][currentDate].cycles[cycleType].isRunning = false;
+          if (increamentCount) {
+            state[projectName][currentDate].cycles[cycleType].count += 1;
+            state[projectName][currentDate].cycles[cycleType].sec = 0;
+          }
         }
       } catch (error) {
         console.log('reducer not works');
